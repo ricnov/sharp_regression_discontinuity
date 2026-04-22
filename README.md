@@ -29,3 +29,13 @@ Where $Z_i$ is the theoretical threshold instrument ($Z_i=1$ if $X_i \ge c$). $\
 **3. Second-Stage Regression (Estimating the Causal Effect):**
 $$Y_i = \beta_0 + \beta_1 \hat{D}_i + \beta_2 X_i + \beta_3(X_i \cdot Z_i) + u_i$$
 Where $\hat{D}_i$ is the predicted inclusion from the first stage. The coefficient $\beta_1$ isolates the causal Local Average Treatment Effect (LATE).
+
+## Key Analytical Takeaways
+
+When interpreting the results of this code, keep the following econometrics and market microstructure principles in mind:
+
+* **First-Stage Inertia Check:** By plotting the probability of actual treatment against the running variable, we capture the financial reality of FTSE Russell's banding process. The jump at $c=0$ is no longer from 0 to 1 (Sharp), but represents a partial compliance rate based on the banding tolerance.
+* **Instrumental Variable Framework (LATE):** Because of the fuzzy boundaries, a standard regression overestimates or misidentifies the treatment. The 2SLS approach estimates the **Local Average Treatment Effect (LATE)**, defined non-parametrically as:
+  $$\tau_{fuzzy} = \frac{\lim_{x \downarrow c} E[Y|X] - \lim_{x \uparrow c} E[Y|X]}{\lim_{x \downarrow c} E[D|X] - \lim_{x \uparrow c} E[D|X]}$$
+  This isolates the causal effect specifically for the "compliers"—the stocks whose inclusion status was directly altered by crossing the theoretical rank threshold.
+* **Microstructure vs. Fundamental Pricing:** Arbitrageurs "trade away" the price anomaly (CAR) in the weeks leading up to Reconstitution Friday. However, passive funds *must* trade exactly on the close of Reconstitution Friday. Consequently, the discontinuity in **Abnormal Volume** is theoretically immune to anticipation and provides a much cleaner, statistically powerful validation of the RDD framework's integrity than CAR alone.
